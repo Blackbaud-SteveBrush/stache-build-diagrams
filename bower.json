@@ -1,0 +1,17 @@
+{
+  "name": "stache-build-diagrams",
+  "homepage": "https://github.com/Blackbaud-SteveBrush/stache-build-diagrams",
+  "authors": [
+    "stevebrush <steve.brush@blackbaud.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
