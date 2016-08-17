@@ -124,7 +124,7 @@
 
     graph = new GitGraph({
         author: 'Engineer',
-        elementId: 'git-graph',
+        elementId: 'git-graph-test',
         template: template
     });
 
@@ -148,14 +148,7 @@
         message: "Initial commit",
         messageDisplay: false
     });
-    deployProd = master.branch({
-        name: 'deploy-prod',
-        column: 4
-    });
-    deployProd.commit({
-        message: "Initial commit",
-        messageDisplay: false
-    });
+    
 
     master.commit({
         message: 'Initial commit',
@@ -194,6 +187,89 @@
         message: "[Trigger deploy to test]"
     });
     changelog.delete();
+
+}(window.GitGraph));
+
+(function (GitGraph) {
+    'use strict';
+
+    var changelog,
+        deployProd,
+        deployTest,
+        feature,
+        graph,
+        master,
+        release,
+        template;
+
+    template = new GitGraph.Template({
+        branch: {
+            color: "#000000",
+            lineWidth: 3,
+            spacingX: 60,
+            mergeStyle: "bezier",
+            showLabel: true,
+            labelFont: "normal 10pt Arial"
+        },
+        commit: {
+            spacingY: -30,
+            dot: {
+                size: 8,
+                strokeColor: "#000000",
+                strokeWidth: 4
+            },
+            tag: {
+                font: "normal 10pt Arial",
+                color: "yellow"
+            },
+            message: {
+                color: "black",
+                font: "normal 12pt Arial",
+                displayBranch: false,
+                displayHash: false,
+            }
+        }
+    });
+
+    graph = new GitGraph({
+        author: 'Engineer',
+        elementId: 'git-graph-prod',
+        template: template
+    });
+
+    master = graph.branch({
+        name: 'master',
+        column: 1
+    });
+
+    master.commit({
+        author: 'UserEd',
+        message: 'Initial commit',
+        messageBranchDisplay: false,
+        messageHashDisplay: false
+    });
+
+    deployTest = master.branch({
+        name: 'deploy-test',
+        column: 3
+    });
+    deployTest.commit({
+        message: "Initial commit",
+        messageDisplay: false
+    });
+    deployProd = master.branch({
+        name: 'deploy-prod',
+        column: 4
+    });
+    deployProd.commit({
+        message: "Initial commit",
+        messageDisplay: false
+    });
+
+    master.commit({
+        message: 'Initial commit',
+        messageDisplay: false
+    });
 
     release = master.branch({
         name: 'release',
@@ -294,8 +370,6 @@
         message: "Initial commit",
         messageDisplay: false
     });
-
-
 
     hotfix = deployProd.branch({
         name: 'hotfix',

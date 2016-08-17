@@ -5,11 +5,15 @@
   <link rel="stylesheet" href="css/gitgraph.css">
 </head>
 <body>
-  <h1>Stache Build Process</h1>
-  <canvas id="git-graph-basic"></canvas>
-  <h1>SKY API Build Process</h1>
-  <canvas id="git-graph"></canvas>
-  <h1>Hotfix Process</h1>
+  <div style="display:none;">
+    <h1>Stache Build Process</h1>
+    <canvas id="git-graph-basic"></canvas>
+  </div>
+  <h1>Deploy to Test Workflow</h1>
+  <canvas id="git-graph-test"></canvas>
+  <h1>Deploy to Production Workflow</h1>
+  <canvas id="git-graph-prod"></canvas>
+  <h1>Hotfix Workflow</h1>
   <canvas id="git-graph-hotfix"></canvas>
   <script src="js/gitgraph.min.js"></script>
   <script src="js/app.js"></script>
