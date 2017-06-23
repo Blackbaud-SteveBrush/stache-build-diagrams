@@ -8,11 +8,15 @@
         template;
 
     template = new GitGraph.Template({
+        arrow: {
+            size: 10,
+            offset: 1
+        },
         branch: {
             color: "#000000",
             lineWidth: 3,
             spacingX: 60,
-            mergeStyle: "bezier",
+            mergeStyle: "straight",
             showLabel: true,
             labelFont: "normal 10pt Arial"
         },
@@ -62,11 +66,6 @@
         messageDisplay: false
     });
 
-    master.commit({
-        message: 'Initial commit',
-        messageDisplay: false
-    });
-
     feature = master.branch({
         name: 'feature',
         column: 2
@@ -87,6 +86,7 @@
     var changelog,
         deployProd,
         deployTest,
+        develop,
         feature,
         graph,
         master,
@@ -94,11 +94,15 @@
         template;
 
     template = new GitGraph.Template({
+        arrow: {
+            size: 10,
+            offset: 1
+        },
         branch: {
             color: "#000000",
             lineWidth: 3,
             spacingX: 60,
-            mergeStyle: "bezier",
+            mergeStyle: "straight",
             showLabel: true,
             labelFont: "normal 10pt Arial"
         },
@@ -142,47 +146,55 @@
 
     deployTest = master.branch({
         name: 'deploy-test',
-        column: 3
+        column: 4
     });
     deployTest.commit({
         message: "Initial commit",
         messageDisplay: false
     });
-    
+
+    develop = master.branch({
+        name: 'develop',
+        column: 2
+    });
+    develop.commit({
+        message: "Initial commit",
+        messageDisplay: false
+    });
 
     master.commit({
         message: 'Initial commit',
         messageDisplay: false
     });
 
-    feature = master.branch({
+    feature = develop.branch({
         name: 'feature',
-        column: 2
+        column: 3
     });
     feature.commit({
         message: 'Updated tutorial'
     });
-    feature.merge(master, {
+    feature.merge(develop, {
         author: 'UserEd',
-        message: '[Pull Request] Merge branch `feature` into `master`'
+        message: '[Pull Request] Merge branch `feature` into `develop`'
     });
-    master.merge(deployTest, {
+    develop.merge(deployTest, {
         author: 'Travis-CI',
         message: "[Trigger deploy to test]"
     });
     feature.delete();
 
-    changelog = master.branch({
+    changelog = develop.branch({
         name: 'changelog',
         showLabel: true,
-        column: 2
+        column: 3
     });
     changelog.commit('Added endpoints and breaking change');
-    changelog.merge(master, {
+    changelog.merge(develop, {
         author: 'UserEd',
-        message: '[Pull Request] Merge branch `changelog` into `master`'
+        message: '[Pull Request] Merge branch `changelog` into `develop`'
     });
-    master.merge(deployTest, {
+    develop.merge(deployTest, {
         author: 'Travis-CI',
         message: "[Trigger deploy to test]"
     });
@@ -190,12 +202,14 @@
 
 }(window.GitGraph));
 
+/* RELEASE */
 (function (GitGraph) {
     'use strict';
 
     var changelog,
         deployProd,
         deployTest,
+        develop,
         feature,
         graph,
         master,
@@ -203,11 +217,15 @@
         template;
 
     template = new GitGraph.Template({
+        arrow: {
+            size: 10,
+            offset: 1
+        },
         branch: {
             color: "#000000",
             lineWidth: 3,
             spacingX: 60,
-            mergeStyle: "bezier",
+            mergeStyle: "straight",
             showLabel: true,
             labelFont: "normal 10pt Arial"
         },
@@ -249,44 +267,51 @@
         messageHashDisplay: false
     });
 
-    deployTest = master.branch({
-        name: 'deploy-test',
-        column: 3
-    });
-    deployTest.commit({
-        message: "Initial commit",
-        messageDisplay: false
-    });
     deployProd = master.branch({
         name: 'deploy-prod',
-        column: 4
+        column: 5
     });
     deployProd.commit({
         message: "Initial commit",
         messageDisplay: false
     });
-
-    master.commit({
-        message: 'Initial commit',
+    deployTest = master.branch({
+        name: 'deploy-test',
+        column: 4
+    });
+    deployTest.commit({
+        message: "Initial commit",
         messageDisplay: false
     });
 
-    release = master.branch({
+    develop = master.branch({
+        name: 'develop',
+        column: 3
+    });
+    develop.commit({
+        message: "Initial commit",
+        messageDisplay: false
+    });
+
+    release = develop.branch({
         name: 'release',
         column: 2
     });
     release.commit({
         author: 'UserEd',
         message: 'Release',
-        tag: 'v1.0.0',
         dotColor: 'red'
+    });
+
+    release.merge(develop, {
+        author: 'UserEd'
+    });
+    develop.merge(deployTest, {
+        author: 'Travis-CI',
+        message: "[Trigger deploy to test]"
     });
     release.merge(master, {
         author: 'UserEd'
-    });
-    master.merge(deployTest, {
-        author: 'Travis-CI',
-        message: "[Trigger deploy to test]"
     });
     master.merge(deployProd, {
         author: 'Travis-CI',
@@ -296,23 +321,28 @@
 
 }(window.GitGraph));
 
-
+/* HOTFIX */
 (function (GitGraph) {
     'use strict';
 
     var deployProd,
         deployTest,
+        develop,
         graph,
         hotfix,
         master,
         template;
 
     template = new GitGraph.Template({
+        arrow: {
+            size: 10,
+            offset: 1
+        },
         branch: {
             color: "#000000",
             lineWidth: 3,
             spacingX: 60,
-            mergeStyle: "bezier",
+            mergeStyle: "straight",
             showLabel: true,
             labelFont: "normal 10pt Arial"
         },
@@ -353,40 +383,50 @@
         messageBranchDisplay: false,
         messageHashDisplay: false
     });
-
-    deployTest = master.branch({
-        name: 'deploy-test',
-        column: 2
-    });
-    deployTest.commit({
-        message: "Initial commit",
-        messageDisplay: false
-    });
     deployProd = master.branch({
         name: 'deploy-prod',
-        column: 4
+        column: 5
     });
     deployProd.commit({
         message: "Initial commit",
         messageDisplay: false
     });
+    deployTest = master.branch({
+        name: 'deploy-test',
+        column: 4
+    });
+    deployTest.commit({
+        message: "Initial commit",
+        messageDisplay: false
+    });
 
-    hotfix = deployProd.branch({
-        name: 'hotfix',
+
+    develop = master.branch({
+        name: 'develop',
         column: 3
     });
-    hotfix.commit({
-        message: 'Fixed issue with production'
+    develop.commit({
+        message: "Initial commit",
+        messageDisplay: false
     });
-    hotfix.merge(deployProd, {
-        author: 'Travis-CI',
-        message: "[Trigger deploy to prod]"
-    });
-    hotfix.merge(master);
 
-    master.merge(deployTest, {
+    hotfix = master.branch({
+        name: 'hotfix',
+        column: 2
+    });
+    hotfix.commit({
+        message: 'Fixed issue with production',
+        dotColor: 'red'
+    });
+    hotfix.merge(develop);
+    develop.merge(deployTest, {
         author: 'Travis-CI',
         message: "[Trigger deploy to test]"
+    });
+    hotfix.merge(master);
+    master.merge(deployProd, {
+        author: 'Travis-CI',
+        message: "[Trigger deploy to prod]"
     });
 
 }(window.GitGraph));
